@@ -7,11 +7,14 @@ import { getIngredients } from '../../services/slices/ingredientsSlice';
 import { useParams } from 'react-router-dom';
 import { getUserOrders } from '../../services/slices/userSlice';
 import { useDispatch } from '../../services/store';
+import { getFeedOrders } from '../../services/slices/feedSlice';
 
 export const OrderInfo: FC = () => {
   const params = useParams();
   /** TODO: взять переменные orderData и ingredients из стора */
-  const orders = useSelector(getUserOrders);
+  const feedOrders = useSelector(getFeedOrders);
+  const userOrders = useSelector(getUserOrders);
+  const orders = feedOrders.concat(userOrders);
   const orderData = orders.filter(
     (order) => order.number.toString() === params.number
   )[0];

@@ -39,7 +39,7 @@ const ingredientsSlice = createSlice({
 
 export const fetchIngredients = createAsyncThunk(
   'fetchIngredrients',
-  async () => getIngredientsApi()
+  getIngredientsApi
 );
 
 export const { getIngredients, getLoading } = ingredientsSlice.selectors;

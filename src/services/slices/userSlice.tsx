@@ -61,6 +61,7 @@ const userSlice = createSlice({
       //fetch user data with token
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
+        state.authorized = true;
       })
       .addCase(fetchUser.rejected, (state, action) => {
         if (action.error) {
@@ -89,6 +90,7 @@ const userSlice = createSlice({
         setCookie('accessToken', action.payload.accessToken);
         localStorage.setItem('refreshToken', action.payload.refreshToken);
         state.user = action.payload.user;
+        state.authorized = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
         console.log(action.error);
@@ -118,9 +120,7 @@ const userSlice = createSlice({
   }
 });
 
-export const fetchUser = createAsyncThunk('fetchUser', async () =>
-  getUserApi()
-);
+export const fetchUser = createAsyncThunk('fetchUser', getUserApi);
 
 export const loginUser = createAsyncThunk(
   'loginUser',
@@ -137,11 +137,9 @@ export const updateUser = createAsyncThunk(
   async (data: Partial<TRegisterData>) => updateUserApi(data)
 );
 
-export const fetchUserOrders = createAsyncThunk('fetchOrders', async () =>
-  getOrdersApi()
-);
+export const fetchUserOrders = createAsyncThunk('fetchOrders', getOrdersApi);
 
-export const logoutUser = createAsyncThunk('logoutUser', () => logoutApi());
+export const logoutUser = createAsyncThunk('logoutUser', logoutApi);
 
 export const { getUserData, getUserOrders, getAuthorized } =
   userSlice.selectors;

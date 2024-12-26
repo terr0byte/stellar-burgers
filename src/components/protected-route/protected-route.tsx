@@ -2,35 +2,25 @@ import { FC, ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { getCookie } from '../../utils/cookie';
 import { useSelector } from 'react-redux';
-import { getUserData } from '../../services/slices/userSlice';
+import { fetchUser, getAuthorized } from '../../services/slices/userSlice';
+import { useDispatch } from '../../services/store';
 
 type TProtectedRouteProps = {
   children: ReactNode;
+  onlyUnAuth?: boolean;
 };
 
 export const ProtectedRoute = (props: TProtectedRouteProps) => {
   const location = useLocation();
-  const user = useSelector(getUserData);
-  if (!getCookie('accessToken')) {
-    if (
-      location.pathname === '/register' ||
-      location.pathname === '/forgot-password' ||
-      location.pathname === '/login' ||
-      location.pathname === '/reset-password'
-    )
-      return props.children;
-    return <Navigate replace to='/login' />;
+  const dispatch = useDispatch();
+  dispatch(fetchUser);
+  const auth = useSelector(getAuthorized);
+  if (!auth && !props.onlyUnAuth) {
+    return <Navigate to='/login' state={{ from: location }} />;
   }
 
-  if (getCookie('accessToken')) {
-    if (
-      location.pathname === '/register' ||
-      location.pathname === '/forgot-password' ||
-      location.pathname === '/login' ||
-      location.pathname === '/reset-password'
-    )
-      return <Navigate replace to='/profile' />;
-    return props.children;
+  if (auth && props.onlyUnAuth) {
+    return <Navigate replace to={location.state.from || '/profile'} />;
   }
 
   return props.children;

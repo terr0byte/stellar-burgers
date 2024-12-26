@@ -11,36 +11,33 @@ import {
 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Modal, OrderInfo, IngredientDetails } from '@components';
 
 import { AppHeader } from '@components';
 import { useDispatch } from '../../services/store';
 import { useEffect } from 'react';
-import { fetchIngredients } from '../../services/slices/ingredientsSlice';
-import { fetchFeed } from '../../services/slices/feedSlice';
 import { ProtectedRoute } from '../protected-route/protected-route';
-import { fetchUser, fetchUserOrders } from '../../services/slices/userSlice';
+import { fetchUser } from '../../services/slices/userSlice';
 
 const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const backgroundLocation = location.state?.background;
   useEffect(() => {
-    dispatch(fetchIngredients());
-    dispatch(fetchFeed());
     dispatch(fetchUser());
-    dispatch(fetchUserOrders());
   }, []);
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes>
+      <Routes location={backgroundLocation || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
         <Route
           path='/login'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <Login />
             </ProtectedRoute>
           }
@@ -48,7 +45,7 @@ const App = () => {
         <Route
           path='/register'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <Register />
             </ProtectedRoute>
           }
@@ -56,7 +53,7 @@ const App = () => {
         <Route
           path='/forgot-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <ForgotPassword />
             </ProtectedRoute>
           }
@@ -64,7 +61,7 @@ const App = () => {
         <Route
           path='/reset-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <ResetPassword />
             </ProtectedRoute>
           }
@@ -86,13 +83,15 @@ const App = () => {
           }
         />
         <Route path='*' element={<NotFound404 />} />
+      </Routes>
+      <Routes>
         <Route
           path='/feed/:number'
           element={
             <Modal
               title={''}
               onClose={function (): void {
-                throw new Error('Function not implemented.');
+                navigate('/feed');
               }}
             >
               <OrderInfo />
@@ -105,7 +104,7 @@ const App = () => {
             <Modal
               title={''}
               onClose={function (): void {
-                throw new Error('Function not implemented.');
+                navigate('/');
               }}
             >
               <IngredientDetails />

@@ -39,9 +39,7 @@ const feedSlice = createSlice({
   }
 });
 
-export const fetchFeed = createAsyncThunk('fetchFeed', async () =>
-  getFeedsApi()
-);
+export const fetchFeed = createAsyncThunk('fetchFeed', getFeedsApi);
 
 export const { getFeedOrders, getTotal, getTotalToday } = feedSlice.selectors;
 export default feedSlice.reducer;
