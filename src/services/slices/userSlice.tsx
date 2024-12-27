@@ -14,6 +14,7 @@ import { deleteCookie, setCookie } from '../../utils/cookie';
 type initialState = {
   user: TUser;
   orders: TOrder[];
+  isLoading: boolean;
   authorized: boolean;
 };
 
@@ -23,6 +24,7 @@ const initialState: initialState = {
     email: ''
   },
   orders: [],
+  isLoading: false,
   authorized: false
 };
 
@@ -33,44 +35,48 @@ const userSlice = createSlice({
   selectors: {
     getUserData: (state) => state.user,
     getUserOrders: (state) => state.orders,
-    getAuthorized: (state) => state.authorized
+    getAuthorized: (state) => state.authorized,
+    getIsLodaing: (state) => state.isLoading
   },
   extraReducers: (builder) => {
     builder
       //USER DATA
       //log-in
       .addCase(loginUser.fulfilled, (state, action) => {
-        setCookie('accessToken', action.payload.accessToken);
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
         state.user = action.payload.user;
         state.authorized = true;
+        state.isLoading = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
         console.log(action.error);
         console.log(2);
         if (action.error.code === '403' || action.error.code === '401') {
           console.log(2);
-          deleteCookie('accessToken');
           state.user = {
             name: '',
             email: ''
           };
           state.authorized = false;
+          state.isLoading = false;
         }
       })
       //fetch user data with token
+      .addCase(fetchUser.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.authorized = true;
+        state.isLoading = false;
       })
       .addCase(fetchUser.rejected, (state, action) => {
         if (action.error) {
-          deleteCookie('accessToken');
           state.user = {
             name: '',
             email: ''
           };
           state.authorized = false;
+          state.isLoading = false;
         }
       })
       //log-out
@@ -79,21 +85,22 @@ const userSlice = createSlice({
           name: '',
           email: ''
         };
-        deleteCookie('accessToken');
         state.authorized = false;
+        state.isLoading = false;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         console.log(action.error);
+        state.isLoading = false;
       })
       //register new user
       .addCase(registerUser.fulfilled, (state, action) => {
-        setCookie('accessToken', action.payload.accessToken);
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
         state.user = action.payload.user;
         state.authorized = true;
+        state.isLoading = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
         console.log(action.error);
+        state.isLoading = false;
       })
       //update user information
       .addCase(updateUser.fulfilled, (state, action) => {
@@ -102,12 +109,12 @@ const userSlice = createSlice({
       .addCase(updateUser.rejected, (state, action) => {
         console.log(action.error);
         if (action.error.code === '403' || action.error.code === '401') {
-          deleteCookie('accessToken');
           state.user = {
             name: '',
             email: ''
           };
           state.authorized = false;
+          state.isLoading = false;
         }
       })
       //USER ORDER DATA
@@ -120,27 +127,65 @@ const userSlice = createSlice({
   }
 });
 
-export const fetchUser = createAsyncThunk('fetchUser', getUserApi);
+export const fetchUser = createAsyncThunk('fetchUser', () =>
+  getUserApi().catch((error) => {
+    deleteCookie('accessToken');
+    return Promise.reject(error);
+  })
+);
 
 export const loginUser = createAsyncThunk(
   'loginUser',
-  ({ email, password }: TLoginData) => loginUserApi({ email, password })
+  ({ email, password }: TLoginData) =>
+    loginUserApi({ email, password })
+      .then((res) => {
+        setCookie('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
+        return res;
+      })
+      .catch((error) => {
+        deleteCookie('accessToken');
+        return Promise.reject(error);
+      })
 );
 
 export const registerUser = createAsyncThunk(
   'registerUser',
-  async (data: TRegisterData) => registerUserApi(data)
+  async (data: TRegisterData) =>
+    registerUserApi(data)
+      .then((res) => {
+        setCookie('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
+        return res;
+      })
+      .catch((error) => {
+        deleteCookie('accessToken');
+        return Promise.reject(error);
+      })
 );
 
 export const updateUser = createAsyncThunk(
   'updateUser',
-  async (data: Partial<TRegisterData>) => updateUserApi(data)
+  async (data: Partial<TRegisterData>) =>
+    updateUserApi(data)
+      .then((res) => res)
+      .catch((error) => {
+        deleteCookie('accessToken');
+        return Promise.reject(error);
+      })
 );
 
 export const fetchUserOrders = createAsyncThunk('fetchOrders', getOrdersApi);
 
-export const logoutUser = createAsyncThunk('logoutUser', logoutApi);
+export const logoutUser = createAsyncThunk('logoutUser', () =>
+  logoutApi()
+    .then((data) => {
+      deleteCookie('accessToken');
+      return data;
+    })
+    .catch((error) => Promise.reject(error))
+);
 
-export const { getUserData, getUserOrders, getAuthorized } =
+export const { getUserData, getUserOrders, getAuthorized, getIsLodaing } =
   userSlice.selectors;
 export default userSlice.reducer;

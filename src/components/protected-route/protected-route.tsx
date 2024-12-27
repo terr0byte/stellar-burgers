@@ -1,9 +1,14 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { getCookie } from '../../utils/cookie';
 import { useSelector } from 'react-redux';
-import { fetchUser, getAuthorized } from '../../services/slices/userSlice';
+import {
+  fetchUser,
+  getAuthorized,
+  getIsLodaing
+} from '../../services/slices/userSlice';
 import { useDispatch } from '../../services/store';
+import { Preloader } from '@ui';
 
 type TProtectedRouteProps = {
   children: ReactNode;
@@ -13,10 +18,17 @@ type TProtectedRouteProps = {
 export const ProtectedRoute = (props: TProtectedRouteProps) => {
   const location = useLocation();
   const dispatch = useDispatch();
-  dispatch(fetchUser);
+  const userLoading = useSelector(getIsLodaing);
   const auth = useSelector(getAuthorized);
+  useEffect(() => {
+    dispatch(fetchUser);
+  }, []);
   if (!auth && !props.onlyUnAuth) {
-    return <Navigate to='/login' state={{ from: location }} />;
+    return userLoading ? (
+      <Preloader />
+    ) : (
+      <Navigate to='/login' state={{ from: location }} />
+    );
   }
 
   if (auth && props.onlyUnAuth) {
