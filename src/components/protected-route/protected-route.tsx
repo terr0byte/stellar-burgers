@@ -24,6 +24,7 @@ export const ProtectedRoute = (props: TProtectedRouteProps) => {
     dispatch(fetchUser);
   }, []);
   if (!auth && !props.onlyUnAuth) {
+    console.log(location);
     return userLoading ? (
       <Preloader />
     ) : (
@@ -32,7 +33,8 @@ export const ProtectedRoute = (props: TProtectedRouteProps) => {
   }
 
   if (auth && props.onlyUnAuth) {
-    return <Navigate replace to={location.state.from || '/profile'} />;
+    console.log(location);
+    return <Navigate replace to={location.state?.from || '/profile'} />;
   }
 
   return props.children;

@@ -80,6 +80,10 @@ const burgerConstructorSlice = createSlice({
       .addCase(createOrder.fulfilled, (state, action) => {
         state.isLoading = false;
         state.orderData = action.payload.order;
+        state.constructorItems = {
+          bun: null,
+          ingredients: []
+        };
       })
       .addCase(createOrder.rejected, (state, action) => {
         state.isLoading = false;

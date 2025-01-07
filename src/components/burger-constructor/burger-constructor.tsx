@@ -29,6 +29,7 @@ export const BurgerConstructor: FC = () => {
     } else {
       if (!constructorItems.bun || orderRequest) return;
       const ingredientsOrder = [
+        constructorItems.bun._id,
         ...constructorItems.ingredients.map((ingredient) => ingredient._id),
         constructorItems.bun._id
       ];

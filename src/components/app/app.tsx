@@ -89,7 +89,7 @@ const App = () => {
           path='/feed/:number'
           element={
             <Modal
-              title={''}
+              title={'#0' + location.pathname.slice(6) || 'Заказ'}
               onClose={function (): void {
                 navigate('/feed');
               }}
@@ -102,7 +102,7 @@ const App = () => {
           path='/ingredients/:id'
           element={
             <Modal
-              title={''}
+              title={'Детали ингредиента'}
               onClose={function (): void {
                 navigate('/');
               }}
@@ -116,8 +116,9 @@ const App = () => {
           element={
             <ProtectedRoute>
               <Modal
-                title={''}
+                title={'#0' + location.pathname.slice(16) || 'Заказ'}
                 onClose={() => {
+                  console.log(location);
                   navigate('/profile/orders');
                 }}
               >

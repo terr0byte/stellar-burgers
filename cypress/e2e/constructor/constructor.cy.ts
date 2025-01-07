@@ -7,13 +7,15 @@ describe('Тесты конструктора и ингредиентов', func
     cy.wait('@getIngredients');
   });
   it('Тест на добавление ингредиента', () => {
+    cy.contains('Краторная булка N-200i').should('exist');
     cy.contains('Краторная булка N-200i').parents('li').find('button').click();
     cy.get(`[data-cy=${'topbun'}]`, { timeout: 1000 })
       .should('exist')
       .and('contain', 'Краторная булка N-200i');
   });
   it('Тест на открытие и закрытие модального окна ингредиента', () => {
-    cy.contains('Краторная булка N-200i').parents('li').click();
+    cy.contains('Краторная булка N-200i').should('exist');
+    cy.contains('Краторная булка N-200i').click();
     cy.get(`[data-cy=${'modal'}]`)
       .should('exist')
       .and('contain', 'Краторная булка N-200i');
