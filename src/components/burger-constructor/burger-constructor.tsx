@@ -11,7 +11,7 @@ import {
 } from '../../services/slices/burgerConstructorSlice';
 import { useDispatch } from '../../services/store';
 import { getAuthorized } from '../../services/slices/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
@@ -21,10 +21,11 @@ export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const authorized = useSelector(getAuthorized);
+  const location = useLocation();
 
   const onOrderClick = () => {
     if (!authorized) {
-      navigate('/login');
+      navigate('/login', { state: { from: location } });
       return;
     } else {
       if (!constructorItems.bun || orderRequest) return;
