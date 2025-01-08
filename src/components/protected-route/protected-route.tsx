@@ -23,7 +23,7 @@ export const ProtectedRoute = (props: TProtectedRouteProps) => {
     dispatch(fetchUser);
     console.log(auth);
   }, []);
-  if (!auth && !props.onlyUnAuth) {
+  if (!auth && !props.onlyUnAuth && !userLoading) {
     return userLoading ? (
       <Preloader />
     ) : (

@@ -24,7 +24,7 @@ const initialState: initialState = {
     email: ''
   },
   orders: [],
-  isLoading: false,
+  isLoading: true,
   authorized: false
 };
 

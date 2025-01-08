@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1736248441041" clover="3.2.0">
-  <project timestamp="1736248441041" name="All files">
-    <metrics statements="685" coveredstatements="436" conditionals="26" coveredconditionals="25" methods="40" coveredmethods="8" elements="751" coveredelements="469" complexity="0" loc="685" ncloc="685" packages="3" files="7" classes="7"/>
+<coverage generated="1736347240011" clover="3.2.0">
+  <project timestamp="1736347240011" name="All files">
+    <metrics statements="689" coveredstatements="436" conditionals="26" coveredconditionals="25" methods="40" coveredmethods="8" elements="755" coveredelements="469" complexity="0" loc="689" ncloc="689" packages="3" files="7" classes="7"/>
     <package name="services">
       <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="rootReducer.ts" path="C:\Users\ilfa2\dev\stellar-burgers\src\services\rootReducer.ts">
@@ -23,9 +23,9 @@
       </file>
     </package>
     <package name="services.slices">
-      <metrics statements="389" coveredstatements="335" conditionals="26" coveredconditionals="25" methods="22" coveredmethods="8"/>
+      <metrics statements="393" coveredstatements="335" conditionals="26" coveredconditionals="25" methods="22" coveredmethods="8"/>
       <file name="burgerConstructorSlice.tsx" path="C:\Users\ilfa2\dev\stellar-burgers\src\services\slices\burgerConstructorSlice.tsx">
-        <metrics statements="105" coveredstatements="90" conditionals="7" coveredconditionals="6" methods="10" coveredmethods="5"/>
+        <metrics statements="109" coveredstatements="90" conditionals="7" coveredconditionals="6" methods="10" coveredmethods="5"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -108,16 +108,16 @@
         <line num="80" count="2" type="stmt"/>
         <line num="81" count="0" type="stmt"/>
         <line num="82" count="0" type="stmt"/>
-        <line num="83" count="2" type="stmt"/>
-        <line num="84" count="2" type="stmt"/>
+        <line num="83" count="0" type="stmt"/>
+        <line num="84" count="0" type="stmt"/>
         <line num="85" count="0" type="stmt"/>
         <line num="86" count="0" type="stmt"/>
         <line num="87" count="2" type="stmt"/>
         <line num="88" count="2" type="stmt"/>
-        <line num="89" count="1" type="stmt"/>
-        <line num="90" count="1" type="stmt"/>
-        <line num="91" count="1" type="stmt"/>
-        <line num="92" count="1" type="stmt"/>
+        <line num="89" count="0" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
+        <line num="91" count="2" type="stmt"/>
+        <line num="92" count="2" type="stmt"/>
         <line num="93" count="1" type="stmt"/>
         <line num="94" count="1" type="stmt"/>
         <line num="95" count="1" type="stmt"/>
@@ -131,6 +131,10 @@
         <line num="103" count="1" type="stmt"/>
         <line num="104" count="1" type="stmt"/>
         <line num="105" count="1" type="stmt"/>
+        <line num="106" count="1" type="stmt"/>
+        <line num="107" count="1" type="stmt"/>
+        <line num="108" count="1" type="stmt"/>
+        <line num="109" count="1" type="stmt"/>
       </file>
       <file name="feedSlice.tsx" path="C:\Users\ilfa2\dev\stellar-burgers\src\services\slices\feedSlice.tsx">
         <metrics statements="45" coveredstatements="43" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="1"/>
