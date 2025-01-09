@@ -93,7 +93,14 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path='/ingredients/:id' element={<ConstructorPage />} />
+            <Route
+              path='/ingredients/:id'
+              element={
+                <div className={styles.center}>
+                  <IngredientDetails />
+                </div>
+              }
+            />
             <Route path='/feed/:number' element={<Feed />} />
             <Route
               path='/profile/orders/:number'
@@ -105,49 +112,51 @@ const App = () => {
             />
             <Route path='*' element={<NotFound404 />} />
           </Routes>
-          <Routes>
-            <Route
-              path='/feed/:number'
-              element={
-                <Modal
-                  title={'#0' + location.pathname.slice(6) || 'Заказ'}
-                  onClose={function (): void {
-                    navigate('/feed');
-                  }}
-                >
-                  <OrderInfo />
-                </Modal>
-              }
-            />
-            <Route
-              path='/ingredients/:id'
-              element={
-                <Modal
-                  title={'Детали ингредиента'}
-                  onClose={function (): void {
-                    navigate('/');
-                  }}
-                >
-                  <IngredientDetails />
-                </Modal>
-              }
-            />
-            <Route
-              path='/profile/orders/:number'
-              element={
-                <ProtectedRoute>
+          {backgroundLocation && (
+            <Routes>
+              <Route
+                path='/feed/:number'
+                element={
                   <Modal
-                    title={'#0' + location.pathname.slice(16) || 'Заказ'}
-                    onClose={() => {
-                      navigate('/profile/orders');
+                    title={'#0' + location.pathname.slice(6) || 'Заказ'}
+                    onClose={function (): void {
+                      navigate('/feed');
                     }}
                   >
                     <OrderInfo />
                   </Modal>
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
+                }
+              />
+              <Route
+                path='/ingredients/:id'
+                element={
+                  <Modal
+                    title={'Детали ингредиента'}
+                    onClose={function (): void {
+                      navigate('/');
+                    }}
+                  >
+                    <IngredientDetails />
+                  </Modal>
+                }
+              />
+              <Route
+                path='/profile/orders/:number'
+                element={
+                  <ProtectedRoute>
+                    <Modal
+                      title={'#0' + location.pathname.slice(16) || 'Заказ'}
+                      onClose={() => {
+                        navigate('/profile/orders');
+                      }}
+                    >
+                      <OrderInfo />
+                    </Modal>
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          )}
         </>
       ) : (
         <Preloader />
