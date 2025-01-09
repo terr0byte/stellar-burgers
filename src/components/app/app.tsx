@@ -32,6 +32,7 @@ const App = () => {
   const location = useLocation();
   const backgroundLocation = location.state?.background;
   const ingredients = useSelector(getIngredients);
+  console.log(location);
   useEffect(() => {
     dispatch(fetchUser());
     dispatch(fetchIngredients());
@@ -86,6 +87,16 @@ const App = () => {
             />
             <Route
               path='/profile/orders'
+              element={
+                <ProtectedRoute>
+                  <ProfileOrders />
+                </ProtectedRoute>
+              }
+            />
+            <Route path='/ingredients/:id' element={<ConstructorPage />} />
+            <Route path='/feed/:number' element={<Feed />} />
+            <Route
+              path='/profile/orders/:number'
               element={
                 <ProtectedRoute>
                   <ProfileOrders />
