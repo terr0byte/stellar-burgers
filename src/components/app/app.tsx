@@ -112,21 +112,8 @@ const App = () => {
             />
             <Route path='*' element={<NotFound404 />} />
           </Routes>
-          {backgroundLocation && (
-            <Routes>
-              <Route
-                path='/feed/:number'
-                element={
-                  <Modal
-                    title={'#0' + location.pathname.slice(6) || 'Заказ'}
-                    onClose={function (): void {
-                      navigate('/feed');
-                    }}
-                  >
-                    <OrderInfo />
-                  </Modal>
-                }
-              />
+          <Routes>
+            {backgroundLocation && (
               <Route
                 path='/ingredients/:id'
                 element={
@@ -140,23 +127,38 @@ const App = () => {
                   </Modal>
                 }
               />
-              <Route
-                path='/profile/orders/:number'
-                element={
-                  <ProtectedRoute>
-                    <Modal
-                      title={'#0' + location.pathname.slice(16) || 'Заказ'}
-                      onClose={() => {
-                        navigate('/profile/orders');
-                      }}
-                    >
-                      <OrderInfo />
-                    </Modal>
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          )}
+            )}
+          </Routes>
+          <Routes>
+            <Route
+              path='/feed/:number'
+              element={
+                <Modal
+                  title={'#0' + location.pathname.slice(6) || 'Заказ'}
+                  onClose={function (): void {
+                    navigate('/feed');
+                  }}
+                >
+                  <OrderInfo />
+                </Modal>
+              }
+            />
+            <Route
+              path='/profile/orders/:number'
+              element={
+                <ProtectedRoute>
+                  <Modal
+                    title={'#0' + location.pathname.slice(16) || 'Заказ'}
+                    onClose={() => {
+                      navigate('/profile/orders');
+                    }}
+                  >
+                    <OrderInfo />
+                  </Modal>
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
         </>
       ) : (
         <Preloader />
