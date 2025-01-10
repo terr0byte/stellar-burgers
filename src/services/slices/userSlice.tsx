@@ -7,7 +7,7 @@ import {
   TLoginData,
   TRegisterData,
   updateUserApi
-} from '@api';
+} from '../../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder, TUser } from '@utils-types';
 import { deleteCookie, setCookie } from '../../utils/cookie';
@@ -24,7 +24,7 @@ const initialState: initialState = {
     email: ''
   },
   orders: [],
-  isLoading: false,
+  isLoading: true,
   authorized: false
 };
 
@@ -49,9 +49,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         console.log(action.error);
-        console.log(2);
         if (action.error.code === '403' || action.error.code === '401') {
-          console.log(2);
           state.user = {
             name: '',
             email: ''

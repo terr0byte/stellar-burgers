@@ -6,6 +6,18 @@
   color: #f2f2f3;
 }
 
+.center{
+  display: flex;
+  margin-top: 120px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title{
+  font-size: 28px;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

@@ -1,6 +1,5 @@
-import { FC, ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { getCookie } from '../../utils/cookie';
 import { useSelector } from 'react-redux';
 import {
   fetchUser,
@@ -22,8 +21,9 @@ export const ProtectedRoute = (props: TProtectedRouteProps) => {
   const auth = useSelector(getAuthorized);
   useEffect(() => {
     dispatch(fetchUser);
+    console.log(auth);
   }, []);
-  if (!auth && !props.onlyUnAuth) {
+  if (!auth && !props.onlyUnAuth && !userLoading) {
     return userLoading ? (
       <Preloader />
     ) : (
@@ -32,7 +32,7 @@ export const ProtectedRoute = (props: TProtectedRouteProps) => {
   }
 
   if (auth && props.onlyUnAuth) {
-    return <Navigate replace to={location.state.from || '/profile'} />;
+    return <Navigate replace to={location.state?.from || '/profile'} />;
   }
 
   return props.children;

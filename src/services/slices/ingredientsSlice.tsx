@@ -1,16 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { getIngredientsApi } from '@api';
+import { createSlice, SerializedError } from '@reduxjs/toolkit';
+import { getIngredientsApi } from '../../utils/burger-api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
+import { error } from 'console';
 
 type initialState = {
   ingredientsLoading: boolean;
   ingredientsData: TIngredient[];
+  error: SerializedError | null;
 };
 
 const initialState: initialState = {
-  ingredientsLoading: true,
-  ingredientsData: []
+  ingredientsLoading: false,
+  ingredientsData: [],
+  error: null
 };
 
 const ingredientsSlice = createSlice({
@@ -30,9 +33,9 @@ const ingredientsSlice = createSlice({
         state.ingredientsLoading = false;
         state.ingredientsData = action.payload;
       })
-      .addCase(fetchIngredients.rejected, (state) => {
+      .addCase(fetchIngredients.rejected, (state, action) => {
         state.ingredientsLoading = false;
-        console.log(state);
+        state.error = action.error;
       });
   }
 });
