@@ -121,7 +121,7 @@ const App = () => {
                 <ProtectedRoute>
                   <div className={styles.center}>
                     <h3 className={`${styles.title} text text_type_main-large`}>
-                      {'#0' + location.pathname.slice(6) || 'Заказ'}
+                      {'#0' + location.pathname.slice(16) || 'Заказ'}
                     </h3>
                     <OrderInfo />
                   </div>
